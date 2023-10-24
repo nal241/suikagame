@@ -1,11 +1,13 @@
 #include "main.h"
 #include "define.h"
 #include "callbackFunc.h"
+#include "Utils.h"
+#include <GL/glut.h>
 
 
 int main(int argc, char *argv[]){
     init_GL(argc, argv);
-    set_callback_functions();
+    init();
     glutMainLoop();
 
     return 0;
@@ -19,6 +21,7 @@ void init_GL(int argc, char *argv[]){
 }
 
 void init(){
-
+    set_callback_functions();
+    keyboard::initKeyBoard();
 }
 

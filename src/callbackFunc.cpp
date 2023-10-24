@@ -1,4 +1,6 @@
 #include "callbackFunc.h"
+#include <GL/glut.h>
+#include <stdlib.h>
 
 void set_callback_functions(){
     glutKeyboardFunc(glut_keyboard);
