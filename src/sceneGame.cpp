@@ -9,6 +9,7 @@ SceneGame::SceneGame(Parameter& param, void (* changeScenePtr)(const eScene, Par
 }
 
 void SceneGame::display(){
+  	glClear(GL_COLOR_BUFFER_BIT);
 
     glDisable(GL_LIGHTING);
     // 平行投影にする
@@ -37,17 +38,16 @@ void SceneGame::display(){
 
     glutSwapBuffers();
     
-    
 
 }
 
 void SceneGame::update(){
-  static int i = 0;
-  if (i == 500){
-    i = 0;
-    Parameter param;
-    changeScene(SCENE_START, param, 1);
-  }
-  i++;
-
+    static int i = 0;
+    if (i == 500){
+      i = 0;
+      Parameter param;
+      changeScene(SCENE_START, param, 1);
+    }
+    i++;
+    glutPostRedisplay();
 }

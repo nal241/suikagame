@@ -9,6 +9,7 @@ SceneStart::SceneStart(Parameter& param, void (* changeScenePtr)(const eScene, P
 }
 
 void SceneStart::display(){
+  	glClear(GL_COLOR_BUFFER_BIT);
 
     glDisable(GL_LIGHTING);
     // 平行投影にする
@@ -42,11 +43,12 @@ void SceneStart::display(){
 }
 
 void SceneStart::update(){
-  static int i = 0;
-  if (i == 500){
-    i = 0;
-    Parameter param;
-    changeScene(SCENE_GAME, param, 1);
-  }
-  i++;
+	static int i = 0;
+	if (i == 500){
+	i = 0;
+	Parameter param;
+	changeScene(SCENE_GAME, param, 1);
+	}
+	i++;
+	glutPostRedisplay();
 }
