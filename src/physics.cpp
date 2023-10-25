@@ -78,6 +78,13 @@ btRigidBody* Physics::makeSphere(btScalar radius, btVector3 origin, int id){
     return body;
 }
 
+void Physics::deleteObjects(btRigidBody* body){
+    if(body && body->getMotionState()) delete body->getMotionState();
+    dynamicsWorld->removeRigidBody(body);
+    delete body;
+
+    return ;
+}
 
 //放置　仕様側で書くべきと判断
 void Physics::doSimulation(){
@@ -123,6 +130,7 @@ void Physics::doSimulation(){
                     btVector3& normalOnB = pt.m_normalWorldOnB;
                     collidedObjects.push_back(obA);
                     collidedObjects.push_back(obB);
+                    pt.
                 }
             }
 
