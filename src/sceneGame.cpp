@@ -1,11 +1,15 @@
 #include "sceneGame.h"
-#include "eScene.h"
+
 #include <GL/glut.h>
 #include <string>
 
+#include "eScene.h"
+
+const char* SceneGame::ParameterTestTag = "test";
 
 SceneGame::SceneGame(Parameter& param, void (* changeScenePtr)(const eScene, Parameter&, const bool)):AbstractScene(param, changeScenePtr)
 {
+	testParameter = param.get(ParameterTestTag);
 }
 
 void SceneGame::display(){
@@ -22,7 +26,7 @@ void SceneGame::display(){
     glLoadIdentity();
 
     // 画面上にテキスト描画
-    std::string str = "game";
+    std::string str = "game: " + std::to_string(testParameter);
 
     glRasterPos2f(10, 10);
     int size = (int)str.size();

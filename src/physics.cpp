@@ -21,11 +21,11 @@ Physics::~Physics(){
 
 void Physics::init(){//暫定的に入れ物を作る
     dynamicsWorld->setGravity(btVector3(0, -10, 0));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, -5, 0));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(11, 5, 0));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(-11, 5, 0));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, 11));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, -11));
+    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, -5, 0), 0);
+    makeStaticBox(btVector3(6., 5., 6.), btVector3(11, 5, 0), 0);
+    makeStaticBox(btVector3(6., 5., 6.), btVector3(-11, 5, 0), 0);
+    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, 11), 0);
+    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, -11), 0);
 
 }
 
@@ -88,10 +88,6 @@ void Physics::deleteObjects(btRigidBody* body){
 
 //放置　仕様側で書くべきと判断
 void Physics::doSimulation(){
-
-    static int i = 0;
-    int arg = 0;
-    //if(i > 120) return;
     dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 
     for(int j = 0 ;j < dynamicsWorld->getNumCollisionObjects(); j++)
@@ -107,36 +103,37 @@ void Physics::doSimulation(){
         }
     }
 
-    {
+}
 
-        btDispatcher* dispatcher =  dynamicsWorld->getDispatcher();
-        int num_manifolds = dispatcher->getNumManifolds();
-        collidedObjects.clear();
-        for(int i = 0; i < num_manifolds; i++){
-            btPersistentManifold *manifold = dispatcher->getManifoldByIndexInternal(i);
-            //btCollisionObject* obA = const_cast<btCollisionObject*> (manifold->getBody0());
-            //btCollisionObject* obB = const_cast<btCollisionObject*> (manifold->getBody1());
-            btCollisionObject* obA = dynamicsWorld->getCollisionObjectArray()[manifold->getBody0()->getWorldArrayIndex()];
-            btCollisionObject* obB = dynamicsWorld->getCollisionObjectArray()[manifold->getBody1()->getWorldArrayIndex()];
+void Physics::checkCollision(){
+    btDispatcher* dispatcher =  dynamicsWorld->getDispatcher();
+    int num_manifolds = dispatcher->getNumManifolds();
+    collisionData.clear();//初期化する
 
-            int user_idx0 = obA->getUserIndex();
-            int user_idx1 = obB->getUserIndex();
+    for(int i = 0; i < num_manifolds; i++){
+        btPersistentManifold *manifold = dispatcher->getManifoldByIndexInternal(i);
 
-            int num_contacts = manifold->getNumContacts();
-            for(int j = 0; j < num_contacts; j++){
-                btManifoldPoint& pt = manifold->getContactPoint(j);
-                if(pt.getDistance() <= 0.f){
-                    const btVector3& ptA = pt.getPositionWorldOnA();
-                    btVector3& normalOnB = pt.m_normalWorldOnB;
-                    collidedObjects.push_back(obA);
-                    collidedObjects.push_back(obB);
-                    pt.
-                }
+        //btCollisionObject* obA = const_cast<btCollisionObject*> (manifold->getBody0());
+        //btCollisionObject* obB = const_cast<btCollisionObject*> (manifold->getBody1());
+        btCollisionObject* obA = dynamicsWorld->getCollisionObjectArray()[manifold->getBody0()->getWorldArrayIndex()];
+        btCollisionObject* obB = dynamicsWorld->getCollisionObjectArray()[manifold->getBody1()->getWorldArrayIndex()];
+
+
+        int num_contacts = manifold->getNumContacts();
+        for(int j = 0; j < num_contacts; j++){
+            btManifoldPoint& pt = manifold->getContactPoint(j);
+            if(pt.getDistance() <= 0.f){
+                CollisionData data = {
+                    .bodyA = btRigidBody::upcast(obA),
+                    .bodyB = btRigidBody::upcast(obB),
+                    .ptA = pt.getPositionWorldOnA(),
+                    .ptB = pt.getPositionWorldOnB()
+                    };
+                collisionData.push_back(data);
+                //btVector3& normalOnB = pt.m_normalWorldOnB;
             }
-
         }
     }
-
 }
 
 void Physics::deleteAllObjects(){

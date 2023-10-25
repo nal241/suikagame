@@ -1,7 +1,10 @@
 #include "sceneStart.h"
-#include "eScene.h"
+
 #include <GL/glut.h>
 #include <string>
+
+#include "eScene.h"
+#include "sceneGame.h"
 
 
 SceneStart::SceneStart(Parameter& param, void (* changeScenePtr)(const eScene, Parameter&, const bool)):AbstractScene(param, changeScenePtr)
@@ -47,6 +50,7 @@ void SceneStart::update(){
 	if (i == 500){
 	i = 0;
 	Parameter param;
+    param.set(SceneGame::ParameterTestTag, 125);
 	changeScene(SCENE_GAME, param, 1);
 	}
 	i++;

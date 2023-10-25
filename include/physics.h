@@ -4,8 +4,8 @@
 
 
 struct CollisionData{
-    btRigidBody* obA;
-    btRigidBody* obB;
+    btRigidBody* bodyA;
+    btRigidBody* bodyB;
     const btVector3& ptA;
     const btVector3& ptB;
 };
@@ -32,18 +32,19 @@ public:
         return collisionData;
     }
     
-
+    btDiscreteDynamicsWorld* dynamicsWorld;
+    std::vector<CollisionData> collisionData;
 private:
     btDefaultCollisionConfiguration* collisionConfiguration;
     btCollisionDispatcher* dispatcher;
     btBroadphaseInterface* overlappingPairCache;
     btSequentialImpulseConstraintSolver* solver;
-    btDiscreteDynamicsWorld* dynamicsWorld;
     
     btAlignedObjectArray<btCollisionShape*> collisionShapes;
-    std::vector<CollisionData> collisionData;
+    
     
 
     void init();
     void deleteAllObjects();
+    void checkCollision();
 };
