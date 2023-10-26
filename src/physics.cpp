@@ -81,10 +81,10 @@ btRigidBody* Physics::makeSphere(btScalar radius, btVector3 origin, int id){
 }
 
 void Physics::deleteObjects(btRigidBody* body){
-    if(body && body->getMotionState()) //delete body->getMotionState();
+    if(body && body->getMotionState()) delete body->getMotionState();
     dynamicsWorld->removeRigidBody(body);
-    //delete body;
-
+    delete body;
+    body = nullptr;
     return ;
 }
 

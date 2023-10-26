@@ -26,4 +26,6 @@ private:
     std::unordered_map<int, std::shared_ptr<Fruit>> fruits;
 
     Physics physics;
+
+    int mergeFruit(int idA, int idB, btVector3 Point);
 };

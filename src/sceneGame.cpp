@@ -48,7 +48,7 @@ void SceneGame::update(){
     physics.dynamicsWorld->stepSimulation(1.f/ 60.f);
     physics.checkCollision();
 
-    //オブジェクトの位置情報を更新
+    //オブジェクトの位置情報を更新、描画
     for(const auto& item: objects){
         auto object = item.second;
         btTransform trans;
@@ -57,16 +57,7 @@ void SceneGame::update(){
         trans.getOpenGLMatrix(object->m);
         object->setPosition(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
     }
-
-    for(const auto& item: objects){
-        auto object = item.second;
-        btTransform trans;
-        btRigidBody* body = object->body;
-        body->getMotionState()->getWorldTransform(trans);
-        trans.getOpenGLMatrix(object->m);
-        object->setPosition(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-    }
-
+    glutPostRedisplay();
 
 
     //衝突時の処理（フルーツマージ）
@@ -75,25 +66,7 @@ void SceneGame::update(){
         //printf("id: %d %d\n",  collisionData[i].bodyA->getUserIndex2(), collisionData[i].bodyB->getUserIndex2());
         if(collisionData[i].bodyA->getUserIndex2() == 1 && collisionData[i].bodyB->getUserIndex2() == 1){
             //フルーツを消して、新たに追加
-            btRigidBody* bodyA = collisionData[i].bodyA;
-            btRigidBody* bodyB = collisionData[i].bodyB;
-
-            physics.deleteObjects(bodyA);
-            physics.deleteObjects(bodyB);
-            objects.erase(bodyA->getUserIndex());
-            objects.erase(bodyB->getUserIndex());
-            fruits.erase(bodyA->getUserIndex());
-            fruits.erase(bodyB->getUserIndex());
-
-            double x,y,z;
-            x = collisionData[i].ptA.getX();
-            y = collisionData[i].ptA.getY();
-            z = collisionData[i].ptA.getZ();
-            auto fruit = std::make_shared<Fruit>(x, y, z, SceneGameId);
-            fruits[SceneGameId] = fruit;
-            objects[SceneGameId] = fruit;
-            fruit->body = physics.makeSphere(fruit->getRadius(), btVector3(x, y, z), SceneGameId);
-            SceneGameId++;
+            mergeFruit(collisionData[i].bodyA->getUserIndex(), collisionData[i].bodyB->getUserIndex(), collisionData[i].ptA);
         }
     }
 
@@ -114,5 +87,28 @@ void SceneGame::update(){
         SpaceDown = 0;
     }
 
-    glutPostRedisplay();
+    if(keyboard::getKeyState('q')) exit(0);
+
+}
+
+int SceneGame::mergeFruit(int idA, int idB, btVector3 Point){
+    auto fruitA = fruits[idA];
+    auto fruitB = fruits[idB];
+    if(fruitA->getFruitName() != fruitB->getFruitName()) return 0;
+    //Aは消す
+    physics.deleteObjects(fruitA->body);
+    objects.erase(fruitA->body->getUserIndex());
+    fruits.erase(fruitA->body->getUserIndex());
+    //Bは次にする
+    
+    physics.deleteObjects(fruitB->body);
+    if(fruitB->getFruitName() < fruitB->MAX_FRUIT_NAME_SIZE){
+        fruitB->stepUp();
+        fruitB->body = physics.makeSphere(fruitB->getRadius(), Point, fruitB->getId());
+        fruitB->body->getWorldTransform().setOrigin(Point);
+    }else{
+    objects.erase(fruitB->body->getUserIndex());
+    fruits.erase(fruitB->body->getUserIndex());        
+    }
+    return 1;
 }
