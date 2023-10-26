@@ -5,6 +5,7 @@
 
 #include "eScene.h"
 #include "sceneGame.h"
+#include "key.h"
 
 
 SceneStart::SceneStart(Parameter& param, void (* changeScenePtr)(const eScene, Parameter&, const bool)):AbstractScene(param, changeScenePtr)
@@ -46,6 +47,7 @@ void SceneStart::display(){
 }
 
 void SceneStart::update(){
+    /*
 	static int i = 0;
 	if (i == 500){
 	i = 0;
@@ -53,6 +55,11 @@ void SceneStart::update(){
     param.set(SceneGame::ParameterTestTag, 125);
 	changeScene(SCENE_GAME, param, 1);
 	}
-	i++;
+	i++;*/
+    if(keyboard::getKeyState('q')) exit(0);
+    Parameter param;
+    param.set(SceneGame::ParameterTestTag, 125);
+    if(keyboard::getKeyState('a')) changeScene(SCENE_GAME, param, 1);
+
 	glutPostRedisplay();
 }

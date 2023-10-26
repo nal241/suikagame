@@ -1,6 +1,12 @@
 #pragma once
 
+#include <vector>
+#include <unordered_map>
+#include <memory>
+
 #include "AbstractScene.h"
+#include "gameObject.h"
+
 
 class SceneGame: public AbstractScene
 {
@@ -15,4 +21,9 @@ public:
 
 private:
     int testParameter;
+
+    std::unordered_map<int, std::shared_ptr<GameObject>> objects;
+    std::unordered_map<int, std::shared_ptr<Fruit>> fruits;
+
+    Physics physics;
 };

@@ -1,10 +1,13 @@
 #include "init.h"
+
+#include <GL/glut.h>
+
+
 #include "define.h"
 #include "callbackFunc.h"
 #include "gameLoop.h"
+#include "key.h"
 
-
-#include <GL/glut.h>
 
 
 
@@ -17,7 +20,7 @@ void init_GL(int argc, char *argv[]){
 
 void init(){
     set_callback_functions();
-    //keyboard::initKeyBoard();
+    keyboard::initKeyBoard();
     initScene();
 }
 

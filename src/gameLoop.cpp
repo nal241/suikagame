@@ -1,11 +1,12 @@
 #include "gameLoop.h"
 
-//#include "Utils.h"
-#include "scenes.h"
 #include <stack>
 #include <memory>
-
 #include <GL/glut.h>
+
+#include "scenes.h"
+#include "key.h"
+
 
 static std::stack<std::shared_ptr<AbstractScene>> sceneStack;
 
@@ -23,6 +24,7 @@ void glut_display(){
 
 void changeScene(const eScene scene, Parameter& parameter, const bool stackClear){
     printf("changed\n");
+    keyboard::clearKeyState();
     if(stackClear){
         while (!sceneStack.empty()){
             sceneStack.pop();

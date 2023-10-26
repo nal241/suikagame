@@ -1,3 +1,4 @@
+#pragma once
 #include "btBulletDynamicsCommon.h"
 
 #include <vector>
@@ -34,6 +35,7 @@ public:
     
     btDiscreteDynamicsWorld* dynamicsWorld;
     std::vector<CollisionData> collisionData;
+    void checkCollision();
 private:
     btDefaultCollisionConfiguration* collisionConfiguration;
     btCollisionDispatcher* dispatcher;
@@ -46,5 +48,4 @@ private:
 
     void init();
     void deleteAllObjects();
-    void checkCollision();
 };

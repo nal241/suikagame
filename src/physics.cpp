@@ -47,6 +47,7 @@ btRigidBody* Physics::makeStaticBox(btVector3 size, btVector3 origin, int id){
     btRigidBody* body = new btRigidBody(rbInfo);
 
     body->setUserIndex(id);
+    body->setUserIndex2(0);
 
     dynamicsWorld->addRigidBody(body);    
 
@@ -74,14 +75,15 @@ btRigidBody* Physics::makeSphere(btScalar radius, btVector3 origin, int id){
 
     dynamicsWorld->addRigidBody(body);
     body->setUserIndex(id);
+    body->setUserIndex2(1);
 
     return body;
 }
 
 void Physics::deleteObjects(btRigidBody* body){
-    if(body && body->getMotionState()) delete body->getMotionState();
+    if(body && body->getMotionState()) //delete body->getMotionState();
     dynamicsWorld->removeRigidBody(body);
-    delete body;
+    //delete body;
 
     return ;
 }

@@ -19,6 +19,7 @@ public:
     }
 
     static void initKeyBoard();
+    static void clearKeyState();
 private:
     static bool key_state[KEY_SIZE];
 };
