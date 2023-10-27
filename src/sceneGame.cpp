@@ -63,10 +63,9 @@ void SceneGame::update(){
     //衝突時の処理（フルーツマージ）
     auto collisionData = physics.getCollisionData();
     for(size_t i = 0; i < collisionData.size(); i++){
-        //printf("id: %d %d\n",  collisionData[i].bodyA->getUserIndex2(), collisionData[i].bodyB->getUserIndex2());
         if(collisionData[i].bodyA->getUserIndex2() == 1 && collisionData[i].bodyB->getUserIndex2() == 1){
             //フルーツを消して、新たに追加
-            mergeFruit(collisionData[i].bodyA->getUserIndex(), collisionData[i].bodyB->getUserIndex(), collisionData[i].ptA);
+            if(mergeFruit(collisionData[i].bodyA->getUserIndex(), collisionData[i].bodyB->getUserIndex(), collisionData[i].ptA) == 1)break;//成功したらbreak
         }
     }
 
@@ -94,6 +93,7 @@ void SceneGame::update(){
 int SceneGame::mergeFruit(int idA, int idB, btVector3 Point){
     auto fruitA = fruits[idA];
     auto fruitB = fruits[idB];
+    if(fruitA == nullptr || fruitB == nullptr) {printf("eixted:id %d %d/n", idA, idB); exit(1);}
     if(fruitA->getFruitName() != fruitB->getFruitName()) return 0;
     //Aは消す
     physics.deleteObjects(fruitA->body);
