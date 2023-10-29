@@ -19,14 +19,9 @@ Physics::~Physics(){
     delete dynamicsWorld;
 }
 
-void Physics::init(){//暫定的に入れ物を作る
-    dynamicsWorld->setGravity(btVector3(0, -10, 0));
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, -5, 0), 0);
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(11, 5, 0), 0);
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(-11, 5, 0), 0);
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, 11), 0);
-    makeStaticBox(btVector3(6., 5., 6.), btVector3(0, 5, -11), 0);
-
+void Physics::init(){
+    dynamicsWorld->setGravity(btVector3(0, -20, 0));
+    
 }
 
 btRigidBody* Physics::makeStaticBox(btVector3 size, btVector3 origin, int id){

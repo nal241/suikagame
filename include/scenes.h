@@ -3,4 +3,6 @@
 #include "AbstractScene.h"
 #include "sceneStart.h"
 #include "sceneGame.h"
+#include "sceneGameOver.h"
+#include "sceneGamePause.h"
 

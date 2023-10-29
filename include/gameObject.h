@@ -13,6 +13,9 @@ public:
     const int getId() const{
         return id;
     }
+    const double getY() const{
+        return y;
+    }
     btRigidBody* body;
     GLfloat m[16];
 
@@ -29,19 +32,29 @@ protected:
 class Fruit: public GameObject
 {
 public:
-    static const int MAX_FRUIT_NAME_SIZE;
+    static const int MAX_FRUIT_NAME_TYPE;
     Fruit(double x, double y, double z, int id);
+    Fruit(double x, double y, double z, int id, int fruit_name);
     void draw();
     const double getRadius() const{
         return fruit_radius[fruit_name];
+    }
+    const float* getColor() const{
+        return fruit_color[fruit_name];
     }
     void stepUp();
     const int getFruitName() const{
         return fruit_name;
     }
+    static const double getRadius(int _fruit_name){
+        return fruit_radius[_fruit_name];
+    }
+    static const float* getColor(int _fruit_name){
+        return fruit_color[_fruit_name];
+    }
 private:
 
-    static const double fruit_color[][3];
+    static const float fruit_color[][4];
     static const double fruit_radius[];
     int fruit_name;
 };

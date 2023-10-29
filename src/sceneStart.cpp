@@ -6,10 +6,12 @@
 #include "eScene.h"
 #include "sceneGame.h"
 #include "key.h"
+#include "GLdraw.h"
 
 
 SceneStart::SceneStart(Parameter& param, void (* changeScenePtr)(const eScene, Parameter&, const bool)):AbstractScene(param, changeScenePtr)
 {
+    glClearColor(0.7765, 0.5568, 0.3176, 0.0);
 }
 
 void SceneStart::display(){
@@ -26,14 +28,13 @@ void SceneStart::display(){
     glLoadIdentity();
 
     // 画面上にテキスト描画
-    std::string str = "start";
+    std::string str = "Fruit Game";
+    drawString(str, 580, 150);
 
-    glRasterPos2f(10, 10);
-    int size = (int)str.size();
-    for(int i = 0; i < size; ++i){
-        char ic = str[i];
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ic);
-    }
+    str = "1: START";
+    drawString(str, 580, 450);
+    str = "2: QUIT";
+    drawString(str, 580, 500);
 
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
@@ -56,10 +57,10 @@ void SceneStart::update(){
 	changeScene(SCENE_GAME, param, 1);
 	}
 	i++;*/
-    if(keyboard::getKeyState('q')) exit(0);
+    if(keyboard::getKeyState('2')) exit(0);
     Parameter param;
     param.set(SceneGame::ParameterTestTag, 125);
-    if(keyboard::getKeyState('a')) changeScene(SCENE_GAME, param, 1);
+    if(keyboard::getKeyState('1')) changeScene(SCENE_GAME, param, 1);
 
 	glutPostRedisplay();
 }

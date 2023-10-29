@@ -1,6 +1,5 @@
 #include "GLdraw.h"
 
-#include <GL/glut.h>
 
 void drawSquare(GLdouble x, GLdouble y, GLdouble height){
     GLdouble Point0[] = {x, y, height};
@@ -14,5 +13,14 @@ void drawSquare(GLdouble x, GLdouble y, GLdouble height){
 	glVertex3dv(Point2);
 	glVertex3dv(Point3);
 	glEnd();
+
+}
+
+void drawString(std::string& str, int x, int y){
+    glRasterPos2f(x, y);
+    for(size_t i = 0; i < str.size(); i++){
+        char ic = str[i];
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ic);
+    }
 
 }
