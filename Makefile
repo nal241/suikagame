@@ -2,12 +2,12 @@ CXX = g++
 
 BINDIR = ./bin
 SRCDIR = ./src
-INCLUDE = -I./include
+INCLUDE = -I./include -I/home/user/libs/bullet3/src
 TMPDIR = ./tmp
 
-LDLIBS = -lglut -lGL -lGLU
-LDFLAGS = -L
-CXXFLAGS = -MMD -MP -Wall
+LDLIBS = -lglut -lGL -lGLU -lBulletDynamics -lBulletCollision -lLinearMath
+LDFLAGS = -L./lib
+CXXFLAGS = -MMD -MP -Wall -g
 
 TARGET = $(BINDIR)/game
 
@@ -16,7 +16,7 @@ OBJ = $(SOURCES:.cpp=.o)
 DEPENDS = $(OBJ:.o=.d)
 
 $(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 
 .cpp.o:
