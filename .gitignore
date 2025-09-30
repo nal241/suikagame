@@ -31,8 +31,13 @@
 *.out
 *.app
 
-test/*
-bin/*
-.vscode/*
+# Build directories
+build/
+tmp/
 
+# IDE
+.vscode/
+
+# Test files
 test.cpp
+test/*
