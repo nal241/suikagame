@@ -2,12 +2,12 @@ CXX = g++
 
 BINDIR = ./bin
 SRCDIR = ./src
-INCLUDE = -I./include -I/home/user/libs/bullet3/src
+INCLUDE = -I./include -I/usr/include/bullet
 TMPDIR = ./tmp
 
 LDLIBS = -lglut -lGL -lGLU -lBulletDynamics -lBulletCollision -lLinearMath
 LDFLAGS = -L./lib
-CXXFLAGS = -MMD -MP -Wall -g
+CXXFLAGS = -MMD -MP -Wall -g -std=c++17
 
 TARGET = $(BINDIR)/game
 
